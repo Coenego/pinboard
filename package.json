@@ -1,0 +1,33 @@
+{
+  "name": "Pinboard",
+  "description": "",
+  "version": "0.0.1",
+  "homepage": "https://github.com/Coenego/pinboard",
+  "author": {
+    "name": "Mathieu Decoene",
+    "email": "hello@mathieudecoene.be"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Coenego/pinboard.git"
+  },
+  "dependencies": {
+    "assert": "latest",
+    "bunyan": "latest",
+    "connect": "latest",
+    "crypto": "latest",
+    "express": "latest",
+    "request": "latest",
+    "shelljs": "latest",
+    "shortid": "latest",
+    "socket.io": "latest",
+    "underscore": "latest",
+    "jquery": "latest"
+  },
+  "optionalDependencies": {
+    "bunyan-syslog": "latest"
+  },
+  "engines": {
+    "node": "latest"
+  }
+}
