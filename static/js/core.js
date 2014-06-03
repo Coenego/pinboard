@@ -22,27 +22,30 @@
  * SOFTWARE.
  */
 
-define([], function() {
-    return {
-        'events': {
+require.config({
+    'baseUrl': '/js',
+    'paths': {
 
-            // General
-            'ERROR': 'error',
+        // Third-party dependencies
+        'bootstrap': 'vendor/bootstrap',
+        'jquery': 'vendor/jquery',
+        'kinetic': 'vendor/kinetic-v5.1.0',
+        'underscore': 'vendor/underscore',
 
-            // Users
-            'GET_USERS': 'getUsers',
-            'USER_CONNECT': 'userConnect',
-            'USER_DISCONNECT': 'userDisconnect',
+        // Config
+        'config': 'core/config',
 
-            // Pins
-            'PIN_CHANGING': 'pinChanging',
-            'PINS_CHANGED': 'pinsChanged',
-            'PIN_CREATED': 'pinCreated',
-            'CREATE_PIN': 'createPin'
-        },
+        // Controllers
+        'core.pins': 'core/controllers/pins',
+        'core.sockets': 'core/controllers/sockets',
+        'core.users': 'core/controllers/users',
 
-        'pins': {
-            'interval': 500
-        }
+        // Models
+        'model.pin': 'core/models/pin'
+    },
+    'shim': {
+        'bootstrap': ['jquery']
     }
 });
+
+require(['core/app']);

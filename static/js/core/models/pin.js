@@ -22,27 +22,29 @@
  * SOFTWARE.
  */
 
-define([], function() {
-    return {
-        'events': {
+define(function() {
 
-            // General
-            'ERROR': 'error',
-
-            // Users
-            'GET_USERS': 'getUsers',
-            'USER_CONNECT': 'userConnect',
-            'USER_DISCONNECT': 'userDisconnect',
-
-            // Pins
-            'PIN_CHANGING': 'pinChanging',
-            'PINS_CHANGED': 'pinsChanged',
-            'PIN_CREATED': 'pinCreated',
-            'CREATE_PIN': 'createPin'
-        },
-
-        'pins': {
-            'interval': 500
-        }
+    /**
+     * A pin model
+     *
+     * @param  {Number}     id          The pin's id
+     * @param  {Number}     posX        The pin's x-position
+     * @param  {Number}     posY        The pin's y-position
+     * @param  {Number}     width       The pin's width
+     * @param  {Number}     height      The pin's height
+     * @param  {Number}     rotation    The pin's rotation
+     * @param  {Blob}       image       The pin's image
+     * @param  {Boolean}    locked      Whether of not the pin is locked
+     * @return {Pin}                    Object representing a pin
+     */
+    return function Pin(id, posX, posY, width, height, rotation, image, locked) {
+        this.id = id;
+        this.posX = posX;
+        this.posY = posY;
+        this.width = width;
+        this.height = height;
+        this.rotation = rotation;
+        this.image = image;
+        this.locked = locked;
     }
 });

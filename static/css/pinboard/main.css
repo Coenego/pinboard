@@ -22,25 +22,15 @@
  * SOFTWARE.
  */
 
-require.config({
-    'baseUrl': '/js',
-    'paths': {
+html, body{
+    padding: 0;
+    margin: 0;
+}
 
-        // Third-party dependencies
-        'bootstrap': 'vendor/bootstrap',
-        'jquery': 'vendor/jquery',
-
-        // Config
-        'config': 'core/config',
-
-        // Controllers
-        'userController': 'core/controllers/users'
-    },
-    'shim': {
-        'bootstrap': {
-            'deps': ['jquery']
-        }
-    }
-});
-
-requirejs(["core/app"]);
+body {
+    background-image: url('../../img/bg.jpg');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    overflow: hidden;
+}

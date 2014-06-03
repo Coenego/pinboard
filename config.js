@@ -28,7 +28,8 @@ var config = module.exports = {};
  * General application configurations
  */
 config.app = {
-    'title': 'Pinboard'
+    'title': 'Pinboard',
+    'ui': __dirname + '/static'
 };
 
 /**
@@ -42,8 +43,27 @@ config.server = {
  * Events
  */
 config.events = {
+
+    // General
     'ERROR': 'error',
+
+    // Users
     'GET_USERS': 'getUsers',
     'USER_CONNECT': 'userConnect',
-    'USER_DISCONNECT': 'userDisconnect'
+    'USER_DISCONNECT': 'userDisconnect',
+
+    // Pins
+    'PIN_CHANGING': 'pinChanging',
+    'PINS_CHANGED': 'pinsChanged',
+    'PIN_CREATED': 'pinCreated',
+    'CREATE_PIN': 'createPin'
+};
+
+/**
+ * Pin configurations
+ *
+ * {Number}     interval        The interval of sending messages to the clients
+ */
+config.pins = {
+    'interval': 500
 };

@@ -22,44 +22,13 @@
  * SOFTWARE.
  */
 
-var _ = require('underscore');
-var express = require('express');
-var os = require('os');
 var util = require('util');
 
 var config = require('./config');
 
+var pins = require('./lib/controllers/pins');
+var server = require('./lib/controllers/server');
 var sockets = require('./lib/controllers/sockets');
-
-/**
- * Create a new express server
- *
- * @param  {Function}       callback            Standard callback function
- * @param  {Object}         callback.err        Error object containing the error code and error message
- * @param  {Express}        callback.app        The ExpressJS app object
- * @param  {HttpServer}     callback.server     The HTTP Server object that is listening
- */
-var createServer = module.exports.createServer = function(callback) {
-
-    var app = express();
-    app.use(express.static(__dirname + '/static'));
-
-    // Try and listen on the specified port
-    var server = app.listen(config.server.port);
-    var io = require('socket.io').listen(server);
-
-    // When the server successfully begins listening, invoke the callback
-    server.once('listening', function() {
-        server.removeAllListeners('error');
-        return callback(null, io, app);
-    });
-
-    // If there is an error connecting, try another port
-    server.once('error', function(err) {
-        server.removeAllListeners('listening');
-        return callback({'code': 400, 'msg': err});
-    });
-};
 
 /**
  * Initialize the server
@@ -67,14 +36,12 @@ var createServer = module.exports.createServer = function(callback) {
 var init = function() {
 
     // Create a new server
-    createServer(function(err, io, app) {
+    server.createServer(function(err, io, app) {
         if (err) {
             return console.log(util.format('Unable to start %s', config.app.title));
         }
 
-        var networkInterfaces = os.networkInterfaces();
-        var address = networkInterfaces['en0'][1]['address'];
-        console.log(config.app.title + ' started at http://' + address +':' + config.server.port);
+        console.log(util.format('%s started at http://localhost:%s', config.app.title, config.server.port));
 
         // Register the routes
         app.get('/', function(req, res) {

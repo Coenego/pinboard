@@ -22,85 +22,14 @@
  * SOFTWARE.
  */
 
-define(['jquery', 'bootstrap', 'config', 'userController'], function($, Bootstrap, config, userController) {
+define(['jquery', 'bootstrap', 'core.pins', 'core.sockets'], function($, Bootstrap, pinsController, socketsController) {
 
-    // Properties
-    var socket = null;
+    // Initialize the sockets
+    socketsController.init();
 
-    /**
-     * Function that initializes the connection with the server and adds eventlisteners
-     */
-    var init = function() {
+    // Initialize the pins
+    pinsController.init();
 
-        // Connect with the server
-        socket = io.connect(window.location.host);
-
-        // When an error occurred on the server
-        socket.on(config.events.ERROR, _onError);
-
-        // When the userlist was updated
-        socket.on(config.events.GET_USERS, _onGetUsers)
-
-        // When the client is connected with the server
-        socket.on(config.events.USER_CONNECT, _onUserConnect);
-
-        // Login on the server
-        socket.emit(config.events.USER_CONNECT);
-    };
-
-    /**
-     * Function that is executed when an error occurred on the server
-     *
-     * @param  {Object}     data            Object containing the message data
-     * @param  {String}     data.event      The name of the dispatched event
-     * @param  {Error}      data.err        Object containing the error code and error message
-     * @api private
-     */
-    var _onError = function(data) {
-        console.log('_onError');
-        console.log(data);
-    };
-
-    /**
-     * Function that is executed when the userlist is received
-     *
-     * @param  {Object}     data            Object containing the message data
-     * @param  {String}     data.event      The name of the dispatched event
-     * @param  {User[]}     data.users      Object containing the active users
-     * @api private
-     */
-    var _onGetUsers = function(data) {
-
-    };
-
-    /**
-     * Function that is executed when the client is connected with the server
-     *
-     * @param  {Object}     data            Object containing the message data
-     * @param  {String}     data.event      The name of the dispatched event
-     * @param  {User}       data.user       Object representing the created user
-     * @api private
-     */
-    var _onUserConnect = function(data) {
-        userController.setMe(data);
-    };
-
-    /**
-     * Function that adds eventlisteners for events dispatched from the controllers
-     */
-    var addBinding = function() {
-
-        // On window close / page leave
-        $(window).on('beforeunload', function() {
-            socket.emit(config.events.USER_DISCONNECT, {'user': userController.getMe()});
-        });
-    };
-
-    /**
-     * Initialization
-     */
-    $(function() {
-        init();
-        addBinding();
-    });
+    // On window close / page leave
+    $(window).on('beforeunload', socketsController.onUserDisconnect);
 });

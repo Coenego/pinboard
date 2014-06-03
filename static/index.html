@@ -6,11 +6,53 @@
         <title>Pinboard</title>
         <meta name="description" content="Pinboard">
         <meta name="viewport" content="width=device-width">
+
+        <link rel="stylesheet" href="/css/vendor/bootstrap.min.css">
+        <link rel="stylesheet" href="/css/vendor/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="/css/pinboard/main.css">
     </head>
     <body>
-        <p>Hello world</p>
 
+        <!-- Navbar top -->
+        <nav class="navbar navbar-inverse" id="pb-top-navbar" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">Pinboard</a>
+                    <p class="navbar-text" id="pb-top-navbar-users">0 users watching</p>
+                </div>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-5">
+                    <button type="button" class="btn btn-primary navbar-btn pull-right" id="btn-new-item">New item</button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- File modal -->
+        <div class="modal fade" id="pb-modal-upload" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Choose a file</h4>
+                    </div><!-- /.modal-header -->
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="input-group">
+                                    <input type="file" name="img" size="5" id="uploadimage">
+                                    <button id='pb-add-image' value="Upload" >Upload</button>
+                                </div><!-- /input-group -->
+                            </div><!-- /.col-lg-6 -->
+                        </div><!-- /.row -->
+                    </div><!-- /.modal-body -->
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+        <!-- Canvas -->
+        <div id="container"></div>
+
+        <!-- Core -->
         <script src="/socket.io/socket.io.js"></script>
-        <script data-main="/js/bootstrap.js" src="/js/vendor/require.js"></script>
+        <script data-main="/js/core.js" src="/js/vendor/require.js"></script>
     </body>
 </html>

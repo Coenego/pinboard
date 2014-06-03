@@ -27,25 +27,61 @@ define([], function() {
     // Stores the current user
     var _me = null;
 
+    // Stores the active users
+    var _users = [];
+
+    /**
+     * Function that updates the navigation bar
+     *
+     * @api private
+     */
+    var updateNavigation = function() {
+
+        // Set the number of users watching
+        var numUsers = Object.keys(_users).length;
+        var str = (numUsers === 1) ? 'user' : 'users';
+        $('#pb-top-navbar').find('#pb-top-navbar-users').text(numUsers + ' ' + str + ' watching');
+    };
+
     return {
 
         /**
          * Returns the current user
          *
-         * @return {User}                       Object representing the current user
+         * @return {User}                   Object representing the current user
          */
         'getMe': function() {
             return _me;
         },
 
         /**
-         * Function that adds the 'me' user
+         * Function that sets the current user
          *
-         * @param  {Object}     data            The response
-         * @param  {User}       data.user       Object representing the current user
+         * @param  {User}       user        Object representing the current user
          */
-        'setMe': function(data) {
-            _me = data.user;
+        'setMe': function(user) {
+            _me = user;
+        },
+
+        /**
+         * Returns the active users
+         *
+         * @return {User[]}                 Collection of active users
+         */
+        'getUsers': function() {
+            return _users;
+        },
+
+        /**
+         * Function that sets the active users
+         *
+         * @param  {User[]}     users       Collection of active users
+         */
+        'setUsers': function(users) {
+            _users = users;
+
+            // Update the navigation
+            updateNavigation();
         }
     };
 });
