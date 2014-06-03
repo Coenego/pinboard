@@ -3,8 +3,9 @@
 This is just a little Node.js experiment that combines Express.js, Socket.io and Kinetic.js.
 
 ## Todo
-- Crop the uploaded images
-- Add delete functionality for pins
+- **Remove inactive users**
+- **Add delete functionality for pins**
+- **Crop the uploaded images**
 - ~~Only pass the changed pins in the socked message data~~
 - ~~Add Bunyan logger~~
 - ~~Add Bower to install front-end dependencies~~
@@ -17,9 +18,14 @@ This is just a little Node.js experiment that combines Express.js, Socket.io and
 
 ## Install
 
+#### Get the latest version from GitHub
 * run `git clone https://github.com/Coenego/pinboard.git`
-* run `npm install -d` to install the back-end dependencies
-* run `bower install` to install the front-end dependencies
+* run `cd pinboard`
 
-## Run
-* run `node app.js` (pipe bunyan)
+#### Install Pinboard automatically
+* run `bin/install.sh`
+
+#### Install Pinboard manually
+* run `bower install`
+* run `npm install -d`
+* run `node app.js | bunyan`
