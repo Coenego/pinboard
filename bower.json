@@ -1,0 +1,11 @@
+{
+  "name": "pinboard",
+  "version": "0.0.1",
+  "dependencies": {
+    "bootstrap": "~3.0.3",
+    "jquery": "~2.0.3",
+    "kineticjs": "~5.1.0",
+    "requirejs": "~2.1.9",
+    "underscore": "~1.5.2"
+  }
+}

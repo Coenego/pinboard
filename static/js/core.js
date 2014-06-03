@@ -27,10 +27,10 @@ require.config({
     'paths': {
 
         // Third-party dependencies
-        'bootstrap': 'vendor/bootstrap',
-        'jquery': 'vendor/jquery',
-        'kinetic': 'vendor/kinetic-v5.1.0',
-        'underscore': 'vendor/underscore',
+        'bootstrap': 'vendor/bootstrap/dist/js/bootstrap',
+        'jquery': 'vendor/jquery/jquery',
+        'kinetic': 'vendor/kineticjs/kinetic',
+        'underscore': 'vendor/underscore/underscore',
 
         // Config
         'config': 'core/config',
