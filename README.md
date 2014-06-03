@@ -4,7 +4,8 @@ This is just a little Node.js experiment that combines Express.js, Socket.io and
 
 ## Todo
 - Crop the uploaded images
-- Only pass the changed pins in the socked message data
+- Add delete functionality for pins
+- ~~Only pass the changed pins in the socked message data~~
 - ~~Add Bunyan logger~~
 - ~~Add Bower to install front-end dependencies~~
 - ~~Allow users to add new rectangles~~

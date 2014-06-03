@@ -35,6 +35,7 @@ define([], function() {
             'USER_DISCONNECT': 'userDisconnect',
 
             // Pins
+            'PIN_CHANGED': 'pinChanged',
             'PIN_CHANGING': 'pinChanging',
             'PINS_CHANGED': 'pinsChanged',
             'PIN_CREATED': 'pinCreated',
@@ -42,7 +43,7 @@ define([], function() {
         },
 
         'pins': {
-            'interval': 500
+            'interval': 250
         }
     }
 });

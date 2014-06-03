@@ -78,6 +78,7 @@ config.events = {
     'USER_DISCONNECT': 'userDisconnect',
 
     // Pins
+    'PIN_CHANGED': 'pinChanged',
     'PIN_CHANGING': 'pinChanging',
     'PINS_CHANGED': 'pinsChanged',
     'PIN_CREATED': 'pinCreated',
@@ -90,5 +91,5 @@ config.events = {
  * @param  {Number}     interval        The interval of sending messages to the clients
  */
 config.pins = {
-    'interval': 500
+    'interval': 250
 };

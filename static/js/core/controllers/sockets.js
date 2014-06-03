@@ -109,6 +109,7 @@ define(['config', 'core.pins', 'core.users'], function(config, pinsController, u
 
             // Pins
             socket.on(config.events.PIN_CREATED, pinsController.addPin);
+            socket.on(config.events.PIN_CHANGED, pinsController.updatePin);
             socket.on(config.events.PINS_CHANGED, pinsController.updatePins);
 
             // Listen to events dispatched from the UI

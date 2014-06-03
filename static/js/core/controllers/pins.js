@@ -56,8 +56,8 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'model.pin'], function($, Bo
                 'stroke': '#FFFFFF',
                 'shadowEnabled': true,
                 'shadowColor': '#000000',
-                'shadowOpacity': .5,
-                'shadowOffset': {'x': 4,'y': 4}
+                'shadowOpacity': .4,
+                'shadowOffset': {'x': 3,'y': 3}
             });
 
             // Add an event listener to the created rectangle
@@ -142,7 +142,7 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'model.pin'], function($, Bo
         /**
          * Function that adds a pin to the canvas
          *
-         ct containing the message data
+         * @param  {Object}     data            Object containing the message data
          * @param  {String}     data.event      The name of the message
          * @param  {Pin}        data.pin        Object representing the created pin
          */
@@ -159,6 +159,23 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'model.pin'], function($, Bo
             $.each(pins, function(id, pin) {
                 _addPin(pin);
             });
+        },
+
+        /**
+         * Function that updates a specific pin
+         *
+         * @param  {Object}     data            Object containing the message data
+         * @param  {String}     data.event      The name of the message
+         * @param  {Object}     data.pins       Object containing the pin
+         */
+        'updatePin': function(data) {
+            var shape = stage.get('#' + data.pin.id)[0];
+            var tween = new Kinetic.Tween({
+                'node': shape,
+                'duration': .15,
+                'x': data.pin.posX,
+                'y': data.pin.posY
+              }).play();
         },
 
         /**
