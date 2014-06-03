@@ -22,10 +22,15 @@
  * SOFTWARE.
  */
 
+var bunyan = require('bunyan');
+
 var config = module.exports = {};
 
 /**
- * General application configurations
+ * `config.app`
+ *
+ * @param  {String}     title            The title of the application
+ * @param  {String}     ui               The path to the static files
  */
 config.app = {
     'title': 'Pinboard',
@@ -33,14 +38,34 @@ config.app = {
 };
 
 /**
- * Express server configurations
+ * `config.logger`
+ *
+ * @param  {Stream[]}   streams         The Bunyan streams
+ * @param  {Object}     serializers     The Bunyan serializers
+ */
+config.logger = {
+    'streams': [{
+        'level': 'info',
+        'stream': process.stdout
+    }],
+    'serializers': {
+        'err': bunyan.stdSerializers.err,
+        'req': bunyan.stdSerializers.req,
+        'res': bunyan.stdSerializers.res
+    }
+};
+
+/**
+ * `config.server`
+ *
+ * @param  {Number}     port            The network port on which the application can be accessed
  */
 config.server = {
     'port': 3500
 };
 
 /**
- * Events
+ * `config.events`
  */
 config.events = {
 
@@ -60,9 +85,9 @@ config.events = {
 };
 
 /**
- * Pin configurations
+ * `config.pins`
  *
- * {Number}     interval        The interval of sending messages to the clients
+ * @param  {Number}     interval        The interval of sending messages to the clients
  */
 config.pins = {
     'interval': 500

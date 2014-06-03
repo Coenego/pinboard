@@ -3,13 +3,16 @@
 This is just a little Node.js experiment that combines Express.js, Socket.io and Kinetic.js.
 
 ## Todo
-- Add Bunyan logger
+- Crop the uploaded images
+- Only pass the changed pins in the socked message data
+- ~~Add Bunyan logger~~
 - ~~Add Bower to install front-end dependencies~~
 - ~~Allow users to add new rectangles~~
 - ~~Add image upload functionality~~
 - ~~Randomly rotate and position the rectangles~~
-- ~~Add Kinetic functionality~~
 - ~~Add real-time dragging with Socket.io~~
+- ~~Add Kinetic functionality~~
+- ~~Setup Express server~~
 
 ## Install
 
