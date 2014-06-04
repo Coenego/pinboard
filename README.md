@@ -5,6 +5,7 @@ This is just a little Node.js experiment that combines Express.js, Socket.io and
 ## Todo
 - **Add delete functionality for pins**
 - **Crop the uploaded images**
+- ~~Put selected pin on top of the stack~~
 - ~~Remove inactive users~~
 - ~~Only pass the changed pins in the socked message data~~
 - ~~Add Bunyan logger~~

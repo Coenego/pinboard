@@ -28,6 +28,7 @@ define(function() {
      * A pin model
      *
      * @param  {Number}     id          The pin's id
+     * @param  {Number}     zIndex      The pin's z-index
      * @param  {Number}     posX        The pin's x-position
      * @param  {Number}     posY        The pin's y-position
      * @param  {Number}     width       The pin's width
@@ -37,8 +38,9 @@ define(function() {
      * @param  {Boolean}    locked      Whether of not the pin is locked
      * @return {Pin}                    Object representing a pin
      */
-    return function Pin(id, posX, posY, width, height, rotation, image, locked) {
+    return function Pin(id, zIndex, posX, posY, width, height, rotation, image, locked) {
         this.id = id;
+        this.zIndex = zIndex;
         this.posX = posX;
         this.posY = posY;
         this.width = width;

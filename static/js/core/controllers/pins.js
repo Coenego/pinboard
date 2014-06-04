@@ -28,6 +28,8 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'model.pin'], function($, Bo
     var stage = null;
     var layer = null;
 
+    var numPins = 0;
+
     /**
      * Function that adds a pin to the canvas
      *
@@ -35,6 +37,9 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'model.pin'], function($, Bo
      * @api private
      */
     var _addPin = function(pin) {
+
+        // Keep track of how many pins we have
+        numPins++;
 
         // Create a new layer
         layer = new Kinetic.Layer();
@@ -62,6 +67,7 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'model.pin'], function($, Bo
 
             // Add an event listener to the created rectangle
             myImage.on('dragmove', onDragMove);
+            myImage.on('mousedown', onMouseDown);
 
             // Add the rectangle to the layer
             layer.add(myImage);
@@ -74,10 +80,30 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'model.pin'], function($, Bo
 
     /**
      * Function that is executed when an object is being dragged
+     *
+     * @param  {Object}     evt         A Kinetic event
+     * @api private
      */
     var onDragMove = function(evt) {
         var attrs = evt.target.attrs;
-        var pin = new Pin(attrs.id, attrs.x, attrs.y);
+        var index = evt.target.index;
+        var pin = new Pin(attrs.id, index, attrs.x, attrs.y, attrs.width, attrs.height, attrs.rotation);
+        $(document).trigger(config.events.PIN_CHANGING, pin);
+    };
+
+    /**
+     * Functin that is executed when an object is focussed
+     *
+     * @param  {Object}     evt         A Kinetic event
+     * @api private
+     */
+    var onMouseDown = function(evt) {
+        var attrs = evt.target.attrs;
+        var shape = stage.get('#' + attrs.id)[0];
+        var zIndex = numPins - 1;
+        var pin = new Pin(attrs.id, zIndex, attrs.x, attrs.y, attrs.width, attrs.height, attrs.rotation);
+        shape.moveUp();
+        shape.parent.draw();
         $(document).trigger(config.events.PIN_CHANGING, pin);
     };
 
@@ -105,7 +131,7 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'model.pin'], function($, Bo
                     var posX = (window.innerWidth * .5);
                     var posY = (window.innerHeight * .5);
                     var rotation = Math.floor(Math.random() * 20 - 10);
-                    var pin = new Pin(null, posX, posY, img.width, img.height, rotation, evt.target.result, false);
+                    var pin = new Pin(null, 0, posX, posY, img.width, img.height, rotation, evt.target.result, false);
 
                     // Send the created pin to the server
                     $(document).trigger(config.events.CREATE_PIN, {'pin': pin});
@@ -170,6 +196,8 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'model.pin'], function($, Bo
          */
         'updatePin': function(data) {
             var shape = stage.get('#' + data.pin.id)[0];
+            shape.setZIndex(data.pin.zIndex);
+            shape.parent.draw();
             var tween = new Kinetic.Tween({
                 'node': shape,
                 'duration': .15,
