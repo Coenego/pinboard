@@ -40,7 +40,7 @@ define(['config', 'core.pins', 'core.users'], function(config, pinsController, u
      */
     var onError = function(data) {
         console.log('_onError');
-        console.log(data);
+        console.log(JSON.parse(data));
     };
 
     /**
@@ -52,6 +52,7 @@ define(['config', 'core.pins', 'core.users'], function(config, pinsController, u
      * @api private
      */
     var onGetUsers = function(data) {
+        data = JSON.parse(data);
         userController.setUsers(data.users);
     };
 
@@ -66,6 +67,7 @@ define(['config', 'core.pins', 'core.users'], function(config, pinsController, u
      */
     var onUserConnect = function(data) {
         _isConnected = true;
+        data = JSON.parse(data);
         userController.setMe(data.user);
         pinsController.addPins(data.pins);
     };

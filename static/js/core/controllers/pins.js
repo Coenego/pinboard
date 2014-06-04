@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-define(['jquery', 'bootstrap', 'kinetic', 'config', 'model.pin'], function($, Bootstrap, Kinetic, config, Pin) {
+define(['jquery', 'bootstrap', 'kinetic', 'config', 'core.users', 'model.pin'], function($, Bootstrap, Kinetic, config, userController, Pin) {
 
     // Kinetic objects
     var stage = null;
@@ -135,7 +135,7 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'model.pin'], function($, Bo
                     var posX = (window.innerWidth * .5);
                     var posY = (window.innerHeight * .5);
                     var rotation = Math.floor(Math.random() * 20 - 10);
-                    var pin = new Pin(null, 0, posX, posY, img.width, img.height, rotation, evt.target.result, false);
+                    var pin = new Pin(null, 0, posX, posY, img.width, img.height, rotation, userController.getMe().id, evt.target.result, false);
 
                     // Send the created pin to the server
                     $(document).trigger(config.events.CREATE_PIN, {'pin': pin});
@@ -177,6 +177,7 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'model.pin'], function($, Bo
          * @param  {Pin}        data.pin        Object representing the created pin
          */
         'addPin': function(data) {
+            data = JSON.parse(data);
             _addPin(data.pin);
         },
 
@@ -204,6 +205,7 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'model.pin'], function($, Bo
          * @param  {Object}     data.pins       Object containing the pin
          */
         'updatePin': function(data) {
+            data = JSON.parse(data);
             var shape = stage.get('#' + data.pin.id)[0];
             shape.setZIndex(data.pin.zIndex);
             shape.parent.draw();
@@ -223,6 +225,7 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'model.pin'], function($, Bo
          * @param  {Object}     data.pins       Object containing the pins
          */
         'updatePins': function(data) {
+            data = JSON.parse(data);
             $.each(data.pins, function(id, value) {
                 var shape = stage.get('#' + id)[0];
                 var tween = new Kinetic.Tween({
