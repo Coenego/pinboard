@@ -87,8 +87,8 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'core.users', 'model.pin'], 
     var onDragMove = function(evt) {
         var attrs = evt.target.attrs;
         var index = evt.target.index;
-        var pin = new Pin(attrs.id, index, attrs.x, attrs.y, attrs.width, attrs.height, attrs.rotation);
-        $(document).trigger(config.events.PIN_CHANGING, pin);
+        var data = {'id': attrs.id, 'posX': attrs.x, 'posY': attrs.y};
+        $(document).trigger(config.events.PIN_CHANGING, data);
     };
 
     /**
@@ -100,11 +100,10 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'core.users', 'model.pin'], 
     var onMouseDown = function(evt) {
         var attrs = evt.target.attrs;
         var shape = stage.get('#' + attrs.id)[0];
-        var zIndex = numPins - 1;
-        var pin = new Pin(attrs.id, zIndex, attrs.x, attrs.y, attrs.width, attrs.height, attrs.rotation);
-        shape.moveUp();
-        shape.parent.draw();
-        $(document).trigger(config.events.PIN_CHANGING, pin);
+        var data = {'id': attrs.id, 'index': numPins - 1};
+        //shape.moveUp();
+        //shape.parent.draw();
+        $(document).trigger(config.events.PIN_CHANGING, data);
     };
 
     /**

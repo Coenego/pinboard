@@ -87,9 +87,9 @@ define(['config', 'core.pins', 'core.users'], function(config, pinsController, u
     var addBinding = function() {
 
         // When a users updates a pin
-        $(document).on(config.events.PIN_CHANGING, function(evt, pin) {
+        $(document).on(config.events.PIN_CHANGING, function(evt, data) {
             if (_lastSent < (Date.now() - config.pins.interval)) {
-                socket.emit(config.events.PIN_CHANGING, {'pin': pin});
+                socket.emit(config.events.PIN_CHANGING, data);
                 _lastSent = Date.now();
             }
         });
