@@ -39,7 +39,6 @@ define(['config', 'core.pins', 'core.users'], function(config, pinsController, u
      * @api private
      */
     var onError = function(data) {
-        console.log('_onError');
         console.log(JSON.parse(data));
     };
 

@@ -28,7 +28,8 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'core.users', 'model.pin'], 
     var stage = null;
     var layer = null;
 
-    var numPins = 0;
+    // The number of pins on the stage
+    var _numPins = 0;
 
     /**
      * Function that adds a pin to the canvas
@@ -39,7 +40,7 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'core.users', 'model.pin'], 
     var _addPin = function(pin) {
 
         // Keep track of how many pins we have
-        numPins++;
+        setNumPins(getNumPins() + 1);
 
         // Create a new layer
         layer = new Kinetic.Layer();
@@ -79,6 +80,59 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'core.users', 'model.pin'], 
     };
 
     /**
+     * When an image is uploaded to the stage
+     *
+     * @param  {Object}     evt         A jQuery event
+     * @api private
+     */
+    var onAddImage = function(evt) {
+        var fileReader = new FileReader();
+        fileReader.onload = function(evt) {
+
+            // Get the image details
+            var img = new Image();
+            img.onload = function() {
+
+                // Create a new pin
+                var posX = (window.innerWidth * .5);
+                var posY = (window.innerHeight * .5);
+                var rotation = Math.floor(Math.random() * 20 - 10);
+                var pin = new Pin(null, 0, posX, posY, img.width, img.height, rotation, userController.getMe().id, evt.target.result, false);
+
+                // Send the created pin to the server
+                $(document).trigger(config.events.CREATE_PIN, {'pin': pin});
+
+                // Close the modal
+                $('#pb-modal-upload').modal('hide');
+            };
+            img.src = fileReader.result;
+        };
+
+        var file = document.getElementById('uploadimage').files[0];
+        fileReader.readAsDataURL(file);
+    };
+
+    /**
+     * When the `clear board` button is clicked
+     *
+     * @param  {Object}     evt         A jQuery event
+     * @api private
+     */
+    var onClearBoardClick = function() {
+        $(document).trigger(config.events.PINS_RESET);
+    };
+
+    /**
+     * When the `new item` button is clicked
+     *
+     * @param  {Object}     evt         A jQuery event
+     * @api private
+     */
+    var onNewItemClick = function() {
+        $('#pb-modal-upload').modal('show');
+    };
+
+    /**
      * Function that is executed when an object is being dragged
      *
      * @param  {Object}     evt         A Kinetic event
@@ -92,7 +146,7 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'core.users', 'model.pin'], 
     };
 
     /**
-     * Functin that is executed when an object is focussed
+     * Function that is executed when an object is focussed
      *
      * @param  {Object}     evt         A Kinetic event
      * @api private
@@ -100,10 +154,49 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'core.users', 'model.pin'], 
     var onMouseDown = function(evt) {
         var attrs = evt.target.attrs;
         var shape = stage.get('#' + attrs.id)[0];
-        var data = {'id': attrs.id, 'index': numPins - 1};
-        //shape.moveUp();
-        //shape.parent.draw();
+        var data = {'id': attrs.id};
         $(document).trigger(config.events.PIN_CHANGING, data);
+    };
+
+    /**
+     * Function that is executed when the window is resized
+     *
+     * @param  {Object}     evt         A jQuery event
+     * @api private
+     */
+    var onWindowResize = function(evt) {
+        var width = evt.target.innerWidth;
+        var height = evt.target.innerHeight;
+    };
+
+    /**
+     * Function that toggles the clear button, depending on whether pins are added or not
+     */
+    var toggleClearButton = function() {
+        if (getNumPins() === 0) {
+            $('#btn-clear-board').hide();
+        } else {
+            $('#btn-clear-board').show();
+        }
+    };
+
+    /**
+     * Function that sets the number of pins
+     *
+     * @param  {Number}     val         The number of pins
+     */
+    var setNumPins = function(val) {
+        _numPins = val;
+        toggleClearButton();
+    };
+
+    /**
+     * Function that gets the number of pins
+     *
+     * @return  {Number}                The number of pins
+     */
+    var getNumPins = function() {
+        return _numPins;
     };
 
     /**
@@ -111,43 +204,17 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'core.users', 'model.pin'], 
      */
     var addBinding = function() {
 
-        // Show the upload modal
-        $('#btn-new-item').on('click', function() {
-            $('#pb-modal-upload').modal('show');
-        });
-
-        $('#btn-clear-board').on('click', function() {
-            $(document).trigger(config.events.PINS_RESET);
-        });
-
         // Create a new image
-        $('#pb-add-image').on('click', function() {
+        $('#pb-add-image').on('click', onAddImage);
 
-            var fileReader = new FileReader();
-            fileReader.onload = function(evt) {
+        // Show the upload modal
+        $('#btn-new-item').on('click', onNewItemClick);
 
-                // Get the image details
-                var img = new Image();
-                img.onload = function() {
+        // When a user clears the pinboard
+        $('#btn-clear-board').on('click', onClearBoardClick);
 
-                    // Create a new pin
-                    var posX = (window.innerWidth * .5);
-                    var posY = (window.innerHeight * .5);
-                    var rotation = Math.floor(Math.random() * 20 - 10);
-                    var pin = new Pin(null, 0, posX, posY, img.width, img.height, rotation, userController.getMe().id, evt.target.result, false);
-
-                    // Send the created pin to the server
-                    $(document).trigger(config.events.CREATE_PIN, {'pin': pin});
-
-                    // Close the modal
-                    $('#pb-modal-upload').modal('hide');
-                };
-                img.src = fileReader.result;
-            };
-
-            var file = document.getElementById('uploadimage').files[0];
-            fileReader.readAsDataURL(file);
-        });
+        // When the window gets resized
+        $(window).on('resize', onWindowResize);
     };
 
     return {
@@ -163,6 +230,9 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'core.users', 'model.pin'], 
                 'width': window.innerWidth,
                 'height': window.innerHeight
             });
+
+            // Initialize the clear button
+            toggleClearButton();
 
             // Start listening to UI events
             addBinding();
@@ -191,8 +261,11 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'core.users', 'model.pin'], 
             });
         },
 
+        /**
+         * Function that clears the stage and resets the pins
+         */
         'resetPins': function() {
-            numPins = 0;
+            setNumPins(0);
             stage.clear();
         },
 
@@ -206,8 +279,6 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'core.users', 'model.pin'], 
         'updatePin': function(data) {
             data = JSON.parse(data);
             var shape = stage.get('#' + data.pin.id)[0];
-            shape.setZIndex(data.pin.zIndex);
-            shape.parent.draw();
             var tween = new Kinetic.Tween({
                 'node': shape,
                 'duration': .15,
