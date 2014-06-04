@@ -3,8 +3,9 @@
 This is just a little Node.js experiment that combines Express.js, Socket.io and Kinetic.js.
 
 ## Todo
-- **Add delete functionality for pins**
+- **Fix z-index bug when selecting image**
 - **Crop the uploaded images**
+- ~~Add delete functionality for pins~~
 - ~~Put selected pin on top of the stack~~
 - ~~Remove inactive users~~
 - ~~Only pass the changed pins in the socked message data~~

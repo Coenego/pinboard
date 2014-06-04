@@ -38,3 +38,7 @@ body {
 #pb-top-navbar {
     margin-bottom: 0px;
 }
+
+#pb-top-navbar .btn.pull-right{
+    margin-left: 7px;
+}

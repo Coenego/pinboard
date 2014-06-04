@@ -117,6 +117,10 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'model.pin'], function($, Bo
             $('#pb-modal-upload').modal('show');
         });
 
+        $('#btn-clear-board').on('click', function() {
+            $(document).trigger(config.events.PINS_RESET);
+        });
+
         // Create a new image
         $('#pb-add-image').on('click', function() {
 
@@ -185,6 +189,11 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'model.pin'], function($, Bo
             $.each(pins, function(id, pin) {
                 _addPin(pin);
             });
+        },
+
+        'resetPins': function() {
+            numPins = 0;
+            stage.clear();
         },
 
         /**

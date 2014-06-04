@@ -96,6 +96,11 @@ define(['config', 'core.pins', 'core.users'], function(config, pinsController, u
         $(document).on(config.events.CREATE_PIN, function(evt, data) {
             socket.emit(config.events.CREATE_PIN, data);
         });
+
+        // When a user resets the pins
+        $(document).on(config.events.PINS_RESET, function() {
+            socket.emit(config.events.PINS_RESET);
+        });
     };
 
     return {
@@ -120,6 +125,7 @@ define(['config', 'core.pins', 'core.users'], function(config, pinsController, u
             socket.on(config.events.PIN_CREATED, pinsController.addPin);
             socket.on(config.events.PIN_CHANGED, pinsController.updatePin);
             socket.on(config.events.PINS_CHANGED, pinsController.updatePins);
+            socket.on(config.events.PINS_RESET, pinsController.resetPins);
 
             // Listen to events dispatched from the UI
             addBinding();
