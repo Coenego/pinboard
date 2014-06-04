@@ -3,9 +3,9 @@
 This is just a little Node.js experiment that combines Express.js, Socket.io and Kinetic.js.
 
 ## Todo
-- **Remove inactive users**
 - **Add delete functionality for pins**
 - **Crop the uploaded images**
+- ~~Remove inactive users~~
 - ~~Only pass the changed pins in the socked message data~~
 - ~~Add Bunyan logger~~
 - ~~Add Bower to install front-end dependencies~~

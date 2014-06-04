@@ -71,13 +71,21 @@ define(['config', 'core.pins', 'core.users'], function(config, pinsController, u
     };
 
     /**
+     * Function that is executed when the server pings the client
+     *
+     * @api private
+     */
+    var onUserPing = function() {
+        socket.emit(config.events.USER_PING, {'id': userController.getMe().id});
+    };
+
+    /**
      * Start listening to UI events
      */
     var addBinding = function() {
 
         // When a users updates a pin
         $(document).on(config.events.PIN_CHANGING, function(evt, pin) {
-
             if (_lastSent < (Date.now() - config.pins.interval)) {
                 socket.emit(config.events.PIN_CHANGING, {'pin': pin});
                 _lastSent = Date.now();
@@ -106,6 +114,7 @@ define(['config', 'core.pins', 'core.users'], function(config, pinsController, u
             // Users
             socket.on(config.events.GET_USERS, onGetUsers);
             socket.on(config.events.USER_CONNECT, onUserConnect);
+            socket.on(config.events.USER_PING, onUserPing);
 
             // Pins
             socket.on(config.events.PIN_CREATED, pinsController.addPin);

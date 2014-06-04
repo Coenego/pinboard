@@ -33,6 +33,7 @@ define([], function() {
             'GET_USERS': 'getUsers',
             'USER_CONNECT': 'userConnect',
             'USER_DISCONNECT': 'userDisconnect',
+            'USER_PING': 'userPing',
 
             // Pins
             'PIN_CHANGED': 'pinChanged',

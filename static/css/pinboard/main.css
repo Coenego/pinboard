@@ -34,3 +34,7 @@ body {
     background-size: cover;
     overflow: hidden;
 }
+
+#pb-top-navbar {
+    margin-bottom: 0px;
+}
