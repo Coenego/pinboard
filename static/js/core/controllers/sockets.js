@@ -30,6 +30,10 @@ define(['config', 'core.pins', 'core.users'], function(config, pinsController, u
     var _isConnected = false;
     var _lastSent = 0;
 
+    //////////////////////////
+    //  INTERNAL FUNCTIONS  //
+    //////////////////////////
+
     /**
      * Function that is executed when an error occurred on the server
      *
@@ -98,13 +102,22 @@ define(['config', 'core.pins', 'core.users'], function(config, pinsController, u
             socket.emit(config.events.CREATE_PIN, data);
         });
 
+        // When the pins' z-index changed
+        $(document).on(config.events.PINS_CHANGED, function(evt, data) {
+            socket.emit(config.events.PINS_CHANGED, data);
+        });
+
         // When a user resets the pins
-        $(document).on(config.events.PINS_RESET, function() {
+        $(document).on(config.events.PINS_RESET, function(evt) {
             socket.emit(config.events.PINS_RESET);
         });
     };
 
-    return {
+    ////////////////////////
+    //  PUBLIC FUNCTIONS  //
+    ////////////////////////
+
+    var that = {
 
         /**
          * Function that initializes the connection with the server and adds eventlisteners
@@ -151,5 +164,7 @@ define(['config', 'core.pins', 'core.users'], function(config, pinsController, u
             _isConnected = false;
             socket.emit(config.events.USER_DISCONNECT, {'user': userController.getMe()});
         }
-    }
+    };
+
+    return that;
 });

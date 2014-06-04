@@ -30,6 +30,10 @@ define([], function() {
     // Stores the active users
     var _users = [];
 
+    //////////////////////////
+    //  INTERNAL FUNCTIONS  //
+    //////////////////////////
+
     /**
      * Function that updates the navigation bar
      *
@@ -43,7 +47,11 @@ define([], function() {
         $('#pb-top-navbar').find('#pb-top-navbar-users').text(numUsers + ' ' + str + ' watching');
     };
 
-    return {
+    ////////////////////////
+    //  PUBLIC FUNCTIONS  //
+    ////////////////////////
+
+    var that = {
 
         /**
          * Returns the current user
@@ -84,4 +92,6 @@ define([], function() {
             updateNavigation();
         }
     };
+
+    return that;
 });

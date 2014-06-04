@@ -28,24 +28,28 @@ define(function() {
      * A pin model
      *
      * @param  {Number}     id          The pin's id
-     * @param  {Number}     zIndex      The pin's z-index
      * @param  {Number}     posX        The pin's x-position
      * @param  {Number}     posY        The pin's y-position
+     * @param  {Number}     index       The pin's z-index
      * @param  {Number}     width       The pin's width
      * @param  {Number}     height      The pin's height
+     * @param  {Number}     offsetX     The pin's x-offset
+     * @param  {Number}     offsetY     The pin's y-offset
      * @param  {Number}     rotation    The pin's rotation
      * @param  {String}     createdBy   The id of the creator
      * @param  {Blob}       image       The pin's image
      * @param  {Boolean}    locked      Whether of not the pin is locked
      * @return {Pin}                    Object representing a pin
      */
-    return function Pin(id, zIndex, posX, posY, width, height, rotation, createdBy, image, locked) {
+    return function Pin(id, posX, posY, index, width, height, offsetX, offsetY, rotation, createdBy, image, locked) {
         this.id = id;
-        this.zIndex = zIndex;
         this.posX = posX;
         this.posY = posY;
+        this.index = index;
         this.width = width;
         this.height = height;
+        this.offsetX = offsetX;
+        this.offsetY = offsetY;
         this.rotation = rotation;
         this.createdBy = createdBy;
         this.image = image;

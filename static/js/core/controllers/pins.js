@@ -28,8 +28,28 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'core.users', 'model.pin'], 
     var stage = null;
     var layer = null;
 
-    // The number of pins on the stage
-    var _numPins = 0;
+    //////////////////////////
+    //  INTERNAL FUNCTIONS  //
+    //////////////////////////
+
+    var initStage = function() {
+
+        // If a stage was created earlier, reset the stage
+        if (stage) {
+            stage.destroyChildren();
+        }
+
+        // Create a new Kinetic stage
+        stage = new Kinetic.Stage({
+            'container': 'container',
+            'width': window.innerWidth,
+            'height': window.innerHeight
+        });
+
+        // Create a new layer and add it to the stage
+        layer = new Kinetic.Layer();
+        stage.add(layer);
+    };
 
     /**
      * Function that adds a pin to the canvas
@@ -39,16 +59,10 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'core.users', 'model.pin'], 
      */
     var _addPin = function(pin) {
 
-        // Keep track of how many pins we have
-        setNumPins(getNumPins() + 1);
-
-        // Create a new layer
-        layer = new Kinetic.Layer();
-
         // Create a Kinetic image object
         var img = new Image();
         img.onload = function() {
-            var myImage = new Kinetic.Image({
+            var pinImage = new Kinetic.Image({
                 'id': pin.id,
                 'x': pin.posX,
                 'y': pin.posY,
@@ -61,20 +75,18 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'core.users', 'model.pin'], 
                 'strokeWidth': 6,
                 'stroke': '#FFFFFF',
                 'shadowEnabled': true,
-                'shadowColor': '#000000',
-                'shadowOpacity': .4,
+                'shadowColor': '#333333',
+                'shadowOpacity': .6,
                 'shadowOffset': {'x': 3,'y': 3}
             });
 
             // Add an event listener to the created rectangle
-            myImage.on('dragmove', onDragMove);
-            myImage.on('mousedown', onMouseDown);
+            pinImage.on('dragmove', onDragMove);
+            pinImage.on('mousedown', onMouseDown);
 
             // Add the rectangle to the layer
-            layer.add(myImage);
-
-            // Add the layer to the canvas
-            stage.add(layer);
+            layer.add(pinImage);
+            layer.draw();
         };
         img.src = pin.image;
     };
@@ -94,10 +106,12 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'core.users', 'model.pin'], 
             img.onload = function() {
 
                 // Create a new pin
-                var posX = (window.innerWidth * .5);
-                var posY = (window.innerHeight * .5);
-                var rotation = Math.floor(Math.random() * 20 - 10);
-                var pin = new Pin(null, 0, posX, posY, img.width, img.height, rotation, userController.getMe().id, evt.target.result, false);
+                var posX = ((window.innerWidth * .5) - (img.width * .5)) + (Math.random() * 50 - 25);
+                var posY = ((window.innerHeight * .5) - (img.height * .5)) + (Math.random() * 50 - 25);
+                var offsetX = -(img.width * .5);
+                var offsetY = -(img.height * .5);
+                var rotation = Math.floor(Math.random() * 30 - 15);
+                var pin = new Pin(null, posX, posY, 0, img.width, img.height, offsetX, offsetY, rotation, userController.getMe().id, evt.target.result, false);
 
                 // Send the created pin to the server
                 $(document).trigger(config.events.CREATE_PIN, {'pin': pin});
@@ -123,16 +137,6 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'core.users', 'model.pin'], 
     };
 
     /**
-     * When the `new item` button is clicked
-     *
-     * @param  {Object}     evt         A jQuery event
-     * @api private
-     */
-    var onNewItemClick = function() {
-        $('#pb-modal-upload').modal('show');
-    };
-
-    /**
      * Function that is executed when an object is being dragged
      *
      * @param  {Object}     evt         A Kinetic event
@@ -154,8 +158,25 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'core.users', 'model.pin'], 
     var onMouseDown = function(evt) {
         var attrs = evt.target.attrs;
         var shape = stage.get('#' + attrs.id)[0];
-        var data = {'id': attrs.id};
-        $(document).trigger(config.events.PIN_CHANGING, data);
+        shape.moveToTop();
+        layer.draw();
+
+        // Update all the pins
+        var data = {};
+        $.each(layer.getChildren(), function(key, child) {
+            data[child.attrs.id] = child.index;
+        });
+        $(document).trigger(config.events.PINS_CHANGED, data);
+    };
+
+    /**
+     * When the `new item` button is clicked
+     *
+     * @param  {Object}     evt         A jQuery event
+     * @api private
+     */
+    var onNewItemClick = function() {
+        $('#pb-modal-upload').modal('show');
     };
 
     /**
@@ -167,36 +188,6 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'core.users', 'model.pin'], 
     var onWindowResize = function(evt) {
         var width = evt.target.innerWidth;
         var height = evt.target.innerHeight;
-    };
-
-    /**
-     * Function that toggles the clear button, depending on whether pins are added or not
-     */
-    var toggleClearButton = function() {
-        if (getNumPins() === 0) {
-            $('#btn-clear-board').hide();
-        } else {
-            $('#btn-clear-board').show();
-        }
-    };
-
-    /**
-     * Function that sets the number of pins
-     *
-     * @param  {Number}     val         The number of pins
-     */
-    var setNumPins = function(val) {
-        _numPins = val;
-        toggleClearButton();
-    };
-
-    /**
-     * Function that gets the number of pins
-     *
-     * @return  {Number}                The number of pins
-     */
-    var getNumPins = function() {
-        return _numPins;
     };
 
     /**
@@ -217,22 +208,19 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'core.users', 'model.pin'], 
         $(window).on('resize', onWindowResize);
     };
 
-    return {
+    ////////////////////////
+    //  PUBLIC FUNCTIONS  //
+    ////////////////////////
+
+    var that = {
 
         /**
          * Initializes the canvas
          */
         'init': function() {
 
-            // Create a new Kinetic stage
-            stage = new Kinetic.Stage({
-                'container': 'container',
-                'width': window.innerWidth,
-                'height': window.innerHeight
-            });
-
-            // Initialize the clear button
-            toggleClearButton();
+            // Initialize the stage
+            initStage();
 
             // Start listening to UI events
             addBinding();
@@ -265,8 +253,7 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'core.users', 'model.pin'], 
          * Function that clears the stage and resets the pins
          */
         'resetPins': function() {
-            setNumPins(0);
-            stage.clear();
+            initStage();
         },
 
         /**
@@ -279,9 +266,10 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'core.users', 'model.pin'], 
         'updatePin': function(data) {
             data = JSON.parse(data);
             var shape = stage.get('#' + data.pin.id)[0];
+            shape.moveToTop();
             var tween = new Kinetic.Tween({
                 'node': shape,
-                'duration': .15,
+                'duration': .1,
                 'x': data.pin.posX,
                 'y': data.pin.posY
               }).play();
@@ -298,6 +286,7 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'core.users', 'model.pin'], 
             data = JSON.parse(data);
             $.each(data.pins, function(id, value) {
                 var shape = stage.get('#' + id)[0];
+                shape.setZIndex(value.index);
                 var tween = new Kinetic.Tween({
                     'node': shape,
                     'duration': .1,
@@ -307,4 +296,6 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'core.users', 'model.pin'], 
             });
         }
     };
+
+    return that;
 });

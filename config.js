@@ -93,5 +93,5 @@ config.events = {
  * @param  {Number}     interval        The interval of sending messages to the clients
  */
 config.pins = {
-    'interval': 250
+    'interval': 500
 };

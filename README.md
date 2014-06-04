@@ -3,18 +3,23 @@
 This is just a little Node.js experiment that combines Express.js, Socket.io and Kinetic.js.
 
 ## Todo
-- **Fix z-index bug when selecting image**
-- **Crop the uploaded images**
-- ~~Add delete functionality for pins~~
+- **Show a message when an error occurs**
+- **Show a notification when a user enters the application**
+- **Show a notification when a user leaves the application**
+- **Preload images of created pins on entering application**
+- **Big images should be resized on upload**
+- **Users should be able to delete pins individually**
+
+- ~~Fix z-index bug when selecting image~~
 - ~~Put selected pin on top of the stack~~
 - ~~Remove inactive users~~
 - ~~Only pass the changed pins in the socked message data~~
 - ~~Add Bunyan logger~~
 - ~~Add Bower to install front-end dependencies~~
-- ~~Allow users to add new rectangles~~
 - ~~Add image upload functionality~~
 - ~~Randomly rotate and position the rectangles~~
 - ~~Add real-time dragging with Socket.io~~
+- ~~Allow users to add new rectangles~~
 - ~~Add Kinetic functionality~~
 - ~~Setup Express server~~
 
