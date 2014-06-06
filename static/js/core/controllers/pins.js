@@ -60,6 +60,8 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'core.users', 'model.pin'], 
     var onWindowResize = function() {
 
         // Get the window's width and height
+        var minWidth = 800;
+        var minHeight = 600;
         var width = window.innerWidth;
         var height = window.innerHeight;
 
@@ -75,6 +77,16 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'core.users', 'model.pin'], 
                 layer.setAttr('offsetY', -(height * .5));
             }
 
+            var scale = 1;
+            if (width < minWidth || height < minHeight) {
+                if (width > height) {
+                    scale = Math.min((height / minHeight), (width / minWidth));
+                }
+            }
+
+            // Adjust the scaling
+            stage.setAttr('scaleX', scale);
+            stage.setAttr('scaleY', scale);
             stage.draw();
         }
     };
@@ -306,6 +318,7 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'core.users', 'model.pin'], 
             $.each(data.pins, function(id, value) {
                 var shape = stage.get('#' + id)[0];
                 shape.setZIndex(value.index);
+                layer.draw();
                 var tween = new Kinetic.Tween({
                     'node': shape,
                     'duration': .25,
