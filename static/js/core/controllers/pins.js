@@ -41,14 +41,42 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'core.users', 'model.pin'], 
 
         // Create a new Kinetic stage
         stage = new Kinetic.Stage({
-            'container': 'container',
-            'width': window.innerWidth,
-            'height': window.innerHeight
+            'container': 'container'
         });
 
         // Create a new layer and add it to the stage
         layer = new Kinetic.Layer();
         stage.add(layer);
+
+        onWindowResize();
+    };
+
+    /**
+     * Function that is executed when the window is resized
+     *
+     * @param  {Object}     evt         A jQuery event
+     * @api private
+     */
+    var onWindowResize = function() {
+
+        // Get the window's width and height
+        var width = window.innerWidth;
+        var height = window.innerHeight;
+
+        // Change the stage's dimensions
+        if (stage) {
+            stage.setAttr('width', width);
+            stage.setAttr('height', height);
+
+            if (layer) {
+                layer.setAttr('width', width);
+                layer.setAttr('height', height);
+                layer.setAttr('offsetX', -(width *.5));
+                layer.setAttr('offsetY', -(height * .5));
+            }
+
+            stage.draw();
+        }
     };
 
     /**
@@ -68,6 +96,8 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'core.users', 'model.pin'], 
                 'y': pin.posY,
                 'width': pin.width,
                 'height': pin.height,
+                'offsetX': pin.offsetX,
+                'offsetY': pin.offsetY,
                 'rotation': pin.rotation,
                 'image': img,
                 'draggable': !pin.locked,
@@ -106,11 +136,11 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'core.users', 'model.pin'], 
             img.onload = function() {
 
                 // Create a new pin
-                var posX = ((window.innerWidth * .5) - (img.width * .5)) + (Math.random() * 50 - 25);
-                var posY = ((window.innerHeight * .5) - (img.height * .5)) + (Math.random() * 50 - 25);
-                var offsetX = -(img.width * .5);
-                var offsetY = -(img.height * .5);
-                var rotation = Math.floor(Math.random() * 30 - 15);
+                var posX = Math.floor(Math.random() * 50 - 25);
+                var posY = Math.floor(Math.random() * 50 - 25);
+                var offsetX = img.width * .5;
+                var offsetY = img.height * .5;
+                var rotation = Math.floor(Math.random() * 20 - 10);
                 var pin = new Pin(null, posX, posY, 0, img.width, img.height, offsetX, offsetY, rotation, userController.getMe().id, evt.target.result, false);
 
                 // Send the created pin to the server
@@ -177,17 +207,6 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'core.users', 'model.pin'], 
      */
     var onNewItemClick = function() {
         $('#pb-modal-upload').modal('show');
-    };
-
-    /**
-     * Function that is executed when the window is resized
-     *
-     * @param  {Object}     evt         A jQuery event
-     * @api private
-     */
-    var onWindowResize = function(evt) {
-        var width = evt.target.innerWidth;
-        var height = evt.target.innerHeight;
     };
 
     /**
@@ -269,7 +288,7 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'core.users', 'model.pin'], 
             shape.moveToTop();
             var tween = new Kinetic.Tween({
                 'node': shape,
-                'duration': .1,
+                'duration': .25,
                 'x': data.pin.posX,
                 'y': data.pin.posY
               }).play();
@@ -289,7 +308,7 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'core.users', 'model.pin'], 
                 shape.setZIndex(value.index);
                 var tween = new Kinetic.Tween({
                     'node': shape,
-                    'duration': .1,
+                    'duration': .25,
                     'x': value.posX,
                     'y': value.posY
                   }).play();

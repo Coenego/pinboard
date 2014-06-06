@@ -122,9 +122,11 @@ define(['jquery', 'bootstrap', 'notify'], function($, Bootstrap) {
          */
         'onUserEntered': function(data) {
             data = JSON.parse(data);
-            var message = data.user.id + ' joined';
-            var options = $.extend(defaults, {'className': 'info'});
-            $.notify(message, options);
+            if (data && data.user) {
+                var message = data.user.id + ' joined';
+                var options = $.extend(defaults, {'className': 'info'});
+                $.notify(message, options);
+            }
         },
 
         /**
@@ -135,9 +137,11 @@ define(['jquery', 'bootstrap', 'notify'], function($, Bootstrap) {
          */
         'onUserLeft': function(data) {
             data = JSON.parse(data);
-            var message = data.user.id + ' left';
-            var options = $.extend(defaults, {'className': 'warn'});
-            $.notify(message, options);
+            if (data && data.user) {
+                var message = data.user.id + ' left';
+                var options = $.extend(defaults, {'className': 'warn'});
+                $.notify(message, options);
+            }
         }
     };
 

@@ -4,12 +4,11 @@ This is just a little Node.js experiment that combines Express.js, Socket.io and
 
 ## Todo
 - **Show a message when an error occurs**
-- **Show a notification when a user enters the application**
-- **Show a notification when a user leaves the application**
 - **Preload images of created pins on entering application**
 - **Big images should be resized on upload**
 - **Users should be able to delete pins individually**
-
+- ~~Show a notification when a user enters the application~~
+- ~~Show a notification when a user leaves the application~~
 - ~~Fix z-index bug when selecting image~~
 - ~~Put selected pin on top of the stack~~
 - ~~Remove inactive users~~
