@@ -35,18 +35,6 @@ define(['config', 'core.pins', 'core.users'], function(config, pinsController, u
     //////////////////////////
 
     /**
-     * Function that is executed when an error occurred on the server
-     *
-     * @param  {Object}     data            Object containing the message data
-     * @param  {String}     data.event      The name of the dispatched event
-     * @param  {Error}      data.err        Object containing the error code and error message
-     * @api private
-     */
-    var onError = function(data) {
-        console.log(JSON.parse(data));
-    };
-
-    /**
      * Function that is executed when the userlist is received
      *
      * @param  {Object}     data            Object containing the message data
@@ -128,11 +116,13 @@ define(['config', 'core.pins', 'core.users'], function(config, pinsController, u
             socket = io.connect(window.location.host);
 
             // Error
-            socket.on(config.events.ERROR, onError);
+            socket.on(config.events.ERROR, userController.onError);
 
             // Users
             socket.on(config.events.GET_USERS, onGetUsers);
             socket.on(config.events.USER_CONNECT, onUserConnect);
+            socket.on(config.events.USER_ENTERED, userController.onUserEntered);
+            socket.on(config.events.USER_LEFT, userController.onUserLeft);
             socket.on(config.events.USER_PING, onUserPing);
 
             // Pins

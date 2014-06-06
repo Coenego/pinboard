@@ -29,6 +29,7 @@ require.config({
         // Third-party dependencies
         'bootstrap': 'vendor/bootstrap/dist/js/bootstrap',
         'jquery': 'vendor/jquery/jquery',
+        'notify': 'vendor/notifyjs/dist/notify-combined',
         'kinetic': 'vendor/kineticjs/kinetic',
         'underscore': 'vendor/underscore/underscore',
 

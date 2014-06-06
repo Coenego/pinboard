@@ -22,13 +22,21 @@
  * SOFTWARE.
  */
 
-define([], function() {
+define(['jquery', 'bootstrap', 'notify'], function($, Bootstrap) {
 
     // Stores the current user
     var _me = null;
 
     // Stores the active users
     var _users = [];
+
+    // Notify animation defaults
+    var defaults = {
+        'globalPosition': 'bottom right',
+        'hideAnimation': 'fadeOut',
+        'hideDuration': 500,
+        'style': 'bootstrap'
+    };
 
     //////////////////////////
     //  INTERNAL FUNCTIONS  //
@@ -54,7 +62,7 @@ define([], function() {
     var that = {
 
         /**
-         * Returns the current user
+         * Function that returns the current user
          *
          * @return {User}                   Object representing the current user
          */
@@ -90,6 +98,46 @@ define([], function() {
 
             // Update the navigation
             updateNavigation();
+        },
+
+        /**
+         * Function that is executed when an error occurred on the server
+         *
+         * @param  {Object}     data            Object containing the message data
+         * @param  {String}     data.event      The name of the dispatched event
+         * @param  {Error}      data.err        Object containing the error code and error message
+         * @api private
+         */
+        'onError': function(data) {
+            var message = data.err.msg;
+            var options = $.extend(defaults, {'className': 'error'});
+            $.notify(message, options);
+        },
+
+        /**
+         * Function that is executed when a new user entered
+         *
+         * @param  {Object}     data        Object containing the message data
+         * @param  {User}       data.user   Object representing a new user
+         */
+        'onUserEntered': function(data) {
+            data = JSON.parse(data);
+            var message = data.user.id + ' joined';
+            var options = $.extend(defaults, {'className': 'info'});
+            $.notify(message, options);
+        },
+
+        /**
+         * Function that is executed when a user left
+         *
+         * @param  {Object}     data        Object containing the message data
+         * @param  {User}       data.user   Object representing a user who left
+         */
+        'onUserLeft': function(data) {
+            data = JSON.parse(data);
+            var message = data.user.id + ' left';
+            var options = $.extend(defaults, {'className': 'warn'});
+            $.notify(message, options);
         }
     };
 
