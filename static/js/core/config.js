@@ -39,9 +39,9 @@ define([], function() {
 
             // Pins
             'PIN_CHANGED': 'pinChanged',
-            'PINS_CHANGED': 'pinsChanged',
             'PIN_CHANGING': 'pinChanging',
             'PIN_CREATED': 'pinCreated',
+            'PIN_DELETED': 'pinDeleted',
             'PINS_CHANGED': 'pinsChanged',
             'PINS_RESET': 'pinsReset',
             'CREATE_PIN': 'createPin'

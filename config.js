@@ -84,6 +84,7 @@ config.events = {
     'PIN_CHANGED': 'pinChanged',
     'PIN_CHANGING': 'pinChanging',
     'PIN_CREATED': 'pinCreated',
+    'PIN_DELETED': 'pinDeleted',
     'PINS_CHANGED': 'pinsChanged',
     'PINS_RESET': 'pinsReset',
     'CREATE_PIN': 'createPin'

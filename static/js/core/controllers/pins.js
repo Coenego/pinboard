@@ -336,11 +336,11 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'core.users', 'model.pin'], 
             });
         },
 
-        /**
-         * Function that clears the stage and resets the pins
-         */
-        'resetPins': function() {
-            initStage();
+        'deletePin': function(data) {
+            data = JSON.parse(data);
+            var shape = stage.get('#' + data.pin)[0];
+            shape.remove();
+            layer.draw();
         },
 
         /**
@@ -360,6 +360,13 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'core.users', 'model.pin'], 
                 'x': data.pin.posX,
                 'y': data.pin.posY
               }).play();
+        },
+
+        /**
+         * Function that clears the stage and resets the pins
+         */
+        'resetPins': function() {
+            initStage();
         },
 
         /**
