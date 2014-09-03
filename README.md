@@ -30,7 +30,7 @@ This is just a little Node.js experiment that combines Express.js, Socket.io and
 * run `cd pinboard`
 
 #### Install Pinboard automatically
-* run `bin/install.sh`
+* run `etc/scripts/install.sh`
 
 #### Install Pinboard manually
 * run `bower install`
