@@ -32,6 +32,22 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'core.users', 'model.pin'], 
     //  INTERNAL FUNCTIONS  //
     //////////////////////////
 
+    /**
+     * Initialize the form
+     *
+     * @api private
+     */
+    var initForm = function() {
+        $('#pb-js-file-container').show();
+        $('#pb-js-pin-container').hide();
+        return false;
+    };
+
+    /**
+     * Initialize the stage
+     *
+     * @api private
+     */
     var initStage = function() {
 
         // If a stage was created earlier, reset the stage
@@ -113,10 +129,10 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'core.users', 'model.pin'], 
                 'rotation': pin.rotation,
                 'image': img,
                 'draggable': !pin.locked,
-                'strokeEnabled': true,
+                'strokeEnabled': pin.stroke,
                 'strokeWidth': 6,
                 'stroke': '#FFFFFF',
-                'shadowEnabled': true,
+                'shadowEnabled': pin.stroke,
                 'shadowColor': '#333333',
                 'shadowOpacity': .6,
                 'shadowOffset': {'x': 3,'y': 3}
@@ -139,7 +155,7 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'core.users', 'model.pin'], 
      * @param  {Object}     evt         A jQuery event
      * @api private
      */
-    var onAddImage = function(evt) {
+    var onCreatePin = function(evt) {
         var fileReader = new FileReader();
         fileReader.onload = function(evt) {
 
@@ -153,19 +169,24 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'core.users', 'model.pin'], 
                 var offsetX = img.width * .5;
                 var offsetY = img.height * .5;
                 var rotation = Math.floor(Math.random() * 20 - 10);
-                var pin = new Pin(null, posX, posY, 0, img.width, img.height, offsetX, offsetY, rotation, userController.getMe().id, evt.target.result, false);
+                var stroke = $('#pb-js-stroke').is(':checked');
+                var pin = new Pin(null, posX, posY, 0, img.width, img.height, offsetX, offsetY, rotation, userController.getMe().id, evt.target.result, stroke, false);
 
                 // Send the created pin to the server
                 $(document).trigger(config.events.CREATE_PIN, {'pin': pin});
 
                 // Close the modal
                 $('#pb-modal-upload').modal('hide');
+
+                // Reset the form
+                resetForm();
             };
             img.src = fileReader.result;
         };
 
-        var file = document.getElementById('uploadimage').files[0];
+        var file = document.getElementById('pb-js-image').files[0];
         fileReader.readAsDataURL(file);
+        return false;
     };
 
     /**
@@ -189,6 +210,17 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'core.users', 'model.pin'], 
         var index = evt.target.index;
         var data = {'id': attrs.id, 'posX': attrs.x, 'posY': attrs.y};
         $(document).trigger(config.events.PIN_CHANGING, data);
+    };
+
+    /**
+     * Function that is executed when a file has been selected
+     *
+     * @param  {Object}     evt         A jQuery event
+     * @api private
+     */
+    var onImageSelect = function(evt) {
+        $('#pb-js-file-container').hide();
+        $('#pb-js-pin-container').show();
     };
 
     /**
@@ -222,18 +254,39 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'core.users', 'model.pin'], 
     };
 
     /**
+     * Reset the form
+     *
+     * @api private
+     */
+    var resetForm = function() {
+        $('#pb-js-frm-add-image').trigger('reset');
+        initForm();
+    };
+
+    /**
      * Start listening to UI events
+     *
+     * @api private
      */
     var addBinding = function() {
 
-        // Create a new image
-        $('#pb-add-image').on('click', onAddImage);
+        // Change the chosen image
+        $('#pb-js-change-image').on('click', initForm);
+
+        // Clear the pinboard
+        $('#pb-js-clear-board').on('click', onClearBoardClick);
+
+        // Create a new pin
+        $('#pb-js-frm-add-image').on('submit', onCreatePin);
+
+        // Switch panels when an image has been selected
+        $('#pb-js-image').on('change', onImageSelect);
 
         // Show the upload modal
-        $('#btn-new-item').on('click', onNewItemClick);
+        $('#pb-js-new-item').on('click', onNewItemClick);
 
-        // When a user clears the pinboard
-        $('#btn-clear-board').on('click', onClearBoardClick);
+        // Reset the form when modal is closed
+        $('#pb-modal-upload').on('hidden.bs.modal', resetForm);
 
         // When the window gets resized
         $(window).on('resize', onWindowResize);
@@ -249,6 +302,9 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'core.users', 'model.pin'], 
          * Initializes the canvas
          */
         'init': function() {
+
+            // Initialize the form
+            initForm();
 
             // Initialize the stage
             initStage();

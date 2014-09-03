@@ -3,6 +3,7 @@
 This is just a little Node.js experiment that combines Express.js, Socket.io and Kinetic.js.
 
 ## Todo
+- **Remove the oldest pin when a new one is added**
 - **Show a message when an error occurs**
 - **Preload images of created pins on entering application**
 - **Big images should be resized on upload**
