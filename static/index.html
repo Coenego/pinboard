@@ -40,16 +40,26 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <form id="pb-js-frm-add-image" action="" method="post">
-                                    <div class="input-group">
+                                    <div class="input-group col-sm-12">
                                         <div id="pb-js-file-container">
                                             <label for="pb-js-image">Select an image</label>
                                             <input id="pb-js-image" type="file" name="img" size="5">
                                         </div>
                                         <div id="pb-js-pin-container">
-                                            <label for="pb-js-stroke">Stroke</label>
-                                            <input id="pb-js-stroke" name="stroke" type="checkbox" checked="checked">
-                                            <button id="pb-js-change-image" class="btn btn-info"><i class="fa fa-refresh"></i> Change Image</button>
-                                            <button id="pb-js-add-image" class="btn btn-success" type="submit"><i class="fa fa-plus"></i> Add Pin</button>
+                                            <div class="well pb-image-container">
+                                                <button id="pb-js-change-image" class="btn btn-info"><i class="fa fa-exchange"></i></button>
+                                                <span class="pb-image-box border">
+                                                    <span class="fa fa-camera-retro"></span>
+                                                </span>
+                                            </div>
+                                            <div class="pb-actions">
+                                                <div class="pb-image-stroke pull-left">
+                                                    <label for="pb-js-stroke">Stroke</label>
+                                                    <input id="pb-js-stroke" name="stroke" type="checkbox" checked="checked">
+                                                </div>
+                                                <button id="pb-js-add-image" class="btn btn-success pull-right" type="submit"><i class="fa fa-plus"></i> Add Pin</button>
+                                                <button id="pb-js-cancel" class="btn btn-danger pull-right">Cancel</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </form>
