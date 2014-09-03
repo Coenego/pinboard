@@ -7,6 +7,7 @@ This is just a little Node.js experiment that combines Express.js, Socket.io and
 - **Preload images of created pins on entering application**
 - **Big images should be resized on upload**
 - **Users should be able to delete pins individually**
+- ~~Remove the oldest pin when a new one is added~~
 - ~~Show a notification when a user enters the application~~
 - ~~Show a notification when a user leaves the application~~
 - ~~Fix z-index bug when selecting image~~

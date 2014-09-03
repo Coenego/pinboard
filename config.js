@@ -84,6 +84,7 @@ config.events = {
     'PIN_CHANGED': 'pinChanged',
     'PIN_CHANGING': 'pinChanging',
     'PIN_CREATED': 'pinCreated',
+    'PIN_DELETED': 'pinDeleted',
     'PINS_CHANGED': 'pinsChanged',
     'PINS_RESET': 'pinsReset',
     'CREATE_PIN': 'createPin'
@@ -95,5 +96,6 @@ config.events = {
  * @param  {Number}     interval        The interval of sending messages to the clients
  */
 config.pins = {
-    'interval': 250
+    'interval': 250,
+    'maxPins': 5
 };

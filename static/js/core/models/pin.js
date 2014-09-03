@@ -38,10 +38,11 @@ define(function() {
      * @param  {Number}     rotation    The pin's rotation
      * @param  {String}     createdBy   The id of the creator
      * @param  {Blob}       image       The pin's image
-     * @param  {Boolean}    locked      Whether of not the pin is locked
+     * @param  {Boolean}    stroke      Whether or not the pin has a stroke
+     * @param  {Boolean}    locked      Whether or not the pin is locked
      * @return {Pin}                    Object representing a pin
      */
-    return function Pin(id, posX, posY, index, width, height, offsetX, offsetY, rotation, createdBy, image, locked) {
+    return function Pin(id, posX, posY, index, width, height, offsetX, offsetY, rotation, createdBy, image, stroke, locked) {
         this.id = id;
         this.posX = posX;
         this.posY = posY;
@@ -53,6 +54,7 @@ define(function() {
         this.rotation = rotation;
         this.createdBy = createdBy;
         this.image = image;
+        this.stroke = stroke;
         this.locked = locked;
     }
 });

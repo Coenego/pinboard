@@ -21,8 +21,8 @@
                     <p class="navbar-text" id="pb-top-navbar-users">0 users watching</p>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-5">
-                    <button type="button" class="btn btn-success navbar-btn pull-right" id="btn-new-item">New item</button>
-                    <button type="button" class="btn btn-danger navbar-btn pull-right" id="btn-clear-board">Clear</button>
+                    <button type="button" class="btn btn-success navbar-btn pull-right" id="pb-js-new-item"><i class="icon-plus"></i> New item</button>
+                    <button type="button" class="btn btn-danger navbar-btn pull-right" id="pb-js-clear-board"><i class="icon-remove"></i> Clear</button>
                 </div>
             </div>
         </nav>
@@ -33,15 +33,25 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title">Choose a file (max 400px width | height)</h4>
+                        <h4 class="modal-title">Select an image</h4>
                     </div>
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-lg-12">
-                                <div class="input-group">
-                                    <input type="file" name="img" size="5" id="uploadimage">
-                                    <button id='pb-add-image' value="Upload" >Upload</button>
-                                </div>
+                                <form id="pb-js-frm-add-image" action="" method="post">
+                                    <div class="input-group">
+                                        <div id="pb-js-file-container">
+                                            <label for="pb-js-image">Select an image</label>
+                                            <input id="pb-js-image" type="file" name="img" size="5">
+                                        </div>
+                                        <div id="pb-js-pin-container">
+                                            <label for="pb-js-stroke">Stroke</label>
+                                            <input id="pb-js-stroke" name="stroke" type="checkbox" checked="checked">
+                                            <button id="pb-js-change-image" class="btn btn-info"><i class="icon-refresh"></i> Change image</button>
+                                            <button id="pb-js-add-image" class="btn btn-success" type="submit"><i class="icon-plus"></i> Add pin</button>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -50,7 +60,7 @@
         </div>
 
         <!-- Canvas -->
-        <div id="container"></div>
+        <div id="container"><!-- --></div>
 
         <!-- Core -->
         <script src="/socket.io/socket.io.js"></script>
