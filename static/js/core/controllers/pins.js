@@ -244,13 +244,34 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'core.users', 'model.pin'], 
     };
 
     /**
+     * Hide the upload modal
+     */
+    var hideUploadModal = function() {
+        $('#pb-modal-upload').modal('hide');
+        return false;
+    };
+
+    /**
      * When the `new item` button is clicked
      *
      * @param  {Object}     evt         A jQuery event
      * @api private
      */
-    var onNewItemClick = function() {
+    var showUploadModal = function() {
         $('#pb-modal-upload').modal('show');
+    };
+
+    /**
+     * Toggle the stroke
+     */
+    var toggleStroke = function() {
+        var enabled = $('#pb-js-stroke').is(':checked');
+        var $box = $('.pb-image-box');
+        if (enabled) {
+            $box.addClass('border');
+        } else {
+            $box.removeClass('border');
+        }
     };
 
     /**
@@ -270,6 +291,9 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'core.users', 'model.pin'], 
      */
     var addBinding = function() {
 
+        // Cancel the new pin
+        $('#pb-js-cancel').on('click', hideUploadModal);
+
         // Change the chosen image
         $('#pb-js-change-image').on('click', initForm);
 
@@ -283,7 +307,10 @@ define(['jquery', 'bootstrap', 'kinetic', 'config', 'core.users', 'model.pin'], 
         $('#pb-js-image').on('change', onImageSelect);
 
         // Show the upload modal
-        $('#pb-js-new-item').on('click', onNewItemClick);
+        $('#pb-js-new-item').on('click', showUploadModal);
+
+        // Toggle the stroke
+        $('#pb-js-stroke').on('change', toggleStroke);
 
         // Reset the form when modal is closed
         $('#pb-modal-upload').on('hidden.bs.modal', resetForm);

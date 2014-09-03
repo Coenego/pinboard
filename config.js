@@ -94,6 +94,7 @@ config.events = {
  * `config.pins`
  *
  * @param  {Number}     interval        The interval of sending messages to the clients
+ * @param  {Number}     maxPins         The maximum number of pins allowed on the board
  */
 config.pins = {
     'interval': 250,
